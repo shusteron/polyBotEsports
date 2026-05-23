@@ -45,7 +45,7 @@ def _fetch_page(offset: int = 0, limit: int = 500, retry: int = 3) -> list[dict]
         try:
             r = requests.get(API_URL, params=params, timeout=30, headers=headers)
             if r.status_code == 429:
-                wait = 60 * (attempt + 1)
+                wait = 20 * (attempt + 1)
                 logger.warning(f"Leaguepedia rate-limited, sleeping {wait}s (attempt {attempt+1}/{retry})")
                 time.sleep(wait)
                 continue
@@ -54,7 +54,7 @@ def _fetch_page(offset: int = 0, limit: int = 500, retry: int = 3) -> list[dict]
             if "error" in data:
                 code = data["error"].get("code", "")
                 if code == "ratelimited":
-                    wait = 60 * (attempt + 1)
+                    wait = 20 * (attempt + 1)
                     logger.warning(f"Leaguepedia rate limit, sleeping {wait}s (attempt {attempt+1}/{retry})")
                     time.sleep(wait)
                     continue

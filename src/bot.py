@@ -52,12 +52,18 @@ class EsportsBot:
             logger.error(f"Failed to load Oracle's Elixir data: {e}")
             self._match_df = pd.DataFrame()
 
-        try:
-            self._ratings = build_ratings(self._match_df) if not self._match_df.empty else {}
-            save_ratings(self._ratings)
-        except Exception as e:
-            logger.warning(f"ELO build failed, loading cached ratings: {e}")
+        if not self._match_df.empty:
+            try:
+                self._ratings = build_ratings(self._match_df)
+                save_ratings(self._ratings)
+            except Exception as e:
+                logger.warning(f"ELO build failed, loading cached ratings: {e}")
+                self._ratings = load_ratings()
+        else:
+            # No live data — use pre-seeded or previously built ratings from disk
             self._ratings = load_ratings()
+            if self._ratings:
+                logger.info("Live match data unavailable — using cached/seeded team ratings")
 
         logger.info(f"Loaded ratings for {len(self._ratings)} teams")
 
