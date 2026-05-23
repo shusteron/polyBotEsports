@@ -83,6 +83,12 @@ class EsportsBot:
 
         for market in markets:
             self._process_market(market, open_trades, today_trades)
+            # Refresh after each trade so concurrent-trade and daily-limit gates stay accurate
+            open_trades = self.paper_trader.get_open_trades()
+            today_trades = [
+                t for t in self.paper_trader._state["trades"]
+                if t.get("opened_at", "")[:10] == str(today)
+            ]
 
         log_status(
             self.paper_trader.capital,

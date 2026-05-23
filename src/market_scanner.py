@@ -178,36 +178,41 @@ def scan_lol_markets() -> list[MatchMarket]:
         context = title.split(" - ", 1)[1] if " - " in title else ""
         region = _detect_region(context)
 
-        sub_markets = event.get("markets", [event])
-        for mkt in sub_markets:
-            yes_price, no_price = _parse_prices(mkt)
-            spread = abs(yes_price + no_price - 1.0)
-            liquidity = float(mkt.get("liquidity", event.get("liquidity", 0)) or 0)
-            volume = float(mkt.get("volume", event.get("volume", 0)) or 0)
-            resolution_date = _parse_resolution_date(mkt) or _parse_resolution_date(event)
+        # One position per match: pick the highest-volume sub-market (series winner)
+        sub_markets = event.get("markets", [])
+        if sub_markets:
+            mkt = max(sub_markets, key=lambda m: float(m.get("volume", 0) or 0))
+        else:
+            mkt = event
 
-            if resolution_date is None:
-                continue
+        yes_price, no_price = _parse_prices(mkt)
+        spread = abs(yes_price + no_price - 1.0)
+        liquidity = float(mkt.get("liquidity", event.get("liquidity", 0)) or 0)
+        volume = float(mkt.get("volume", event.get("volume", 0)) or 0)
+        resolution_date = _parse_resolution_date(mkt) or _parse_resolution_date(event)
 
-            market_id = str(mkt.get("id", event.get("id", "")))
-            question = mkt.get("question", mkt.get("title", title))
+        if resolution_date is None:
+            continue
 
-            markets.append(MatchMarket(
-                id=market_id,
-                title=title,
-                team_a=team_a,
-                team_b=team_b,
-                region=region,
-                yes_price=yes_price,
-                no_price=no_price,
-                liquidity=liquidity,
-                volume=volume,
-                spread=spread,
-                resolution_date=resolution_date,
-                question=question,
-                slug=event.get("slug", ""),
-                active=not event.get("closed", False),
-            ))
+        market_id = str(mkt.get("id", event.get("id", "")))
+        question = mkt.get("question", mkt.get("title", title))
+
+        markets.append(MatchMarket(
+            id=market_id,
+            title=title,
+            team_a=team_a,
+            team_b=team_b,
+            region=region,
+            yes_price=yes_price,
+            no_price=no_price,
+            liquidity=liquidity,
+            volume=volume,
+            spread=spread,
+            resolution_date=resolution_date,
+            question=question,
+            slug=event.get("slug", ""),
+            active=not event.get("closed", False),
+        ))
 
     logger.info(f"Parsed {len(markets)} LoL match markets")
     return markets

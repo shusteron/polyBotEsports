@@ -1,1 +1,44 @@
-{"capital": 10000.0, "trades": []}
+{
+  "capital": 9604.0,
+  "trades": [
+    {
+      "id": "a99a57ee",
+      "market_id": "2269581",
+      "market_title": "LoL: DN SOOPers vs Gen.G (BO3) - LCK Rounds 1-2",
+      "team_a": "DN SOOPers",
+      "team_b": "Gen.G",
+      "action": "BUY_YES",
+      "fill_price": 0.042581,
+      "size": 200.0,
+      "model_prob": 0.2917631023100087,
+      "market_prob": 0.0405,
+      "edge": 0.2512631023100087,
+      "confidence": 76.0,
+      "status": "OPEN",
+      "opened_at": "2026-05-23T10:39:26.839437+00:00",
+      "resolution_date": "2026-05-24T14:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    },
+    {
+      "id": "7a945880",
+      "market_id": "2293225",
+      "market_title": "LoL: LYON vs Team Liquid (BO5) - LCS Playoffs",
+      "team_a": "LYON",
+      "team_b": "TL",
+      "action": "BUY_YES",
+      "fill_price": 0.014525000000000001,
+      "size": 196.0,
+      "model_prob": 0.41121549622567694,
+      "market_prob": 0.0125,
+      "edge": 0.3987154962256769,
+      "confidence": 64.7,
+      "status": "OPEN",
+      "opened_at": "2026-05-23T10:39:26.841498+00:00",
+      "resolution_date": "2026-05-25T01:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    }
+  ],
+  "version": "1.0"
+}
