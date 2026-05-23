@@ -94,13 +94,13 @@ class EsportsBot:
 
     def _process_market(self, market: MatchMarket, open_trades: list, today_trades: list) -> None:
         try:
-            if self._match_df is None or self._match_df.empty:
-                return
+            # match_df may be empty (Leaguepedia unavailable); ELO + form still work from seeded ratings
+            match_df = self._match_df if self._match_df is not None else pd.DataFrame()
 
             prediction = calculate_win_probability(
                 market=market,
                 ratings=self._ratings,
-                match_df=self._match_df,
+                match_df=match_df,
                 weights=self.cfg["probability"]["weights"],
                 min_h2h=self.cfg["probability"]["min_h2h_meetings"],
                 form_window=self.cfg["probability"]["form_window"],
