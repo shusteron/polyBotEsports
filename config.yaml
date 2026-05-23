@@ -1,0 +1,71 @@
+polymarket:
+  gamma_api: "https://gamma-api.polymarket.com"
+  clob_api: "https://clob.polymarket.com"
+  tag_slugs:
+    - "esports"
+    - "league-of-legends"
+    - "sports"
+
+data_sources:
+  oracle_elixir:
+    url_2025: "https://oracleselixir-downloadable-match-data.s3-us-west-2.amazonaws.com/2025/2025_LoL_esports_match_data_from_OraclesElixir.csv"
+    url_2024: "https://oracleselixir-downloadable-match-data.s3-us-west-2.amazonaws.com/2024/2024_LoL_esports_match_data_from_OraclesElixir.csv"
+    cache_hours: 12
+  cito_api:
+    base_url: "https://api.cito.gg/api/v1/lol"
+    # Set CITO_API_KEY in environment / GitHub secrets
+
+regions:
+  - "LCK"
+  - "LEC"
+
+elo:
+  initial_rating: 1500
+  k_factor: 32
+  decay_halflife_days: 180    # matches older than ~6mo count less
+
+probability:
+  weights:
+    elo: 0.55
+    recent_form: 0.30
+    head_to_head: 0.15
+  min_h2h_meetings: 5         # fall back to ELO if fewer meetings
+  form_window: 10             # last N matches for recent form
+  form_decay: 0.85            # exponential decay per match going back
+
+confidence:
+  weights:
+    data_quality: 0.30        # number of historical matches
+    elo_spread: 0.25          # rating difference between teams
+    form_consistency: 0.20    # variance in recent results
+    calibration: 0.15         # historical calibration score
+    liquidity: 0.10           # market depth
+
+risk:
+  starting_capital: 10000.0
+  kelly_fraction: 0.25
+  max_trade_pct: 0.02         # 2% of capital per trade
+  max_daily_pct: 0.10         # 10% total daily exposure
+  max_concurrent_positions: 5
+  min_trade_size: 10.0
+  max_trade_size: 200.0
+
+filters:
+  min_liquidity: 100          # USD
+  max_spread: 0.06            # 6% bid-ask spread
+  min_hours_to_match: 2       # avoid in-play latency
+  max_days_to_match: 14       # don't bet too far out
+  min_team_matches: 10        # minimum match history per team
+  min_elo_games: 5            # minimum games to trust ELO
+  min_edge: 0.10              # 10% edge required
+  min_confidence: 60          # 60/100 confidence required
+  coin_flip_buffer: 0.05      # reject if |p - 0.50| < 0.05
+
+execution:
+  paper_trading: true
+  simulated_slippage: 0.002   # 0.2%
+  simulated_fee: 0.002        # 0.2%
+
+logging:
+  level: "INFO"
+  file: "data/bot.log"

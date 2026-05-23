@@ -1,0 +1,85 @@
+name: Esports Bot — Auto Scan
+
+on:
+  schedule:
+    - cron: '0 6 * * *'    # 06:00 UTC (LCK morning games)
+    - cron: '0 12 * * *'   # 12:00 UTC
+    - cron: '0 18 * * *'   # 18:00 UTC (LEC afternoon games)
+    - cron: '0 0 * * *'    # 00:00 UTC
+    - cron: '30 9 * * *'   # 09:30 UTC daily (resolve expired)
+  workflow_dispatch:
+
+jobs:
+  scan:
+    if: >
+      github.event.schedule == '0 6 * * *' ||
+      github.event.schedule == '0 12 * * *' ||
+      github.event.schedule == '0 18 * * *' ||
+      github.event.schedule == '0 0 * * *' ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      CITO_API_KEY: ${{ secrets.CITO_API_KEY }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scan
+        run: python main.py --mode scan
+
+      - name: Export Excel report
+        run: python main.py --mode report
+
+      - name: Commit results
+        run: |
+          git config user.name "EsportsBot"
+          git config user.email "bot@esportsbot.local"
+          git add data/ exports/
+          git diff --cached --quiet || git commit -m "auto: scan $(date '+%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  resolve:
+    if: github.event.schedule == '30 9 * * *'
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      CITO_API_KEY: ${{ secrets.CITO_API_KEY }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Resolve expired markets
+        run: python main.py --mode resolve
+
+      - name: Commit calibration data
+        run: |
+          git config user.name "EsportsBot"
+          git config user.email "bot@esportsbot.local"
+          git add data/
+          git diff --cached --quiet || git commit -m "auto: resolve $(date '+%Y-%m-%d %H:%M UTC')"
+          git pull --rebase origin main
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
