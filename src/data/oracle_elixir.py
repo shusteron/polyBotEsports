@@ -29,38 +29,42 @@ def _cache_is_fresh() -> bool:
     return age < CACHE_HOURS * 3600
 
 
-def _fetch_page(offset: int = 0, limit: int = 500) -> list[dict]:
+def _fetch_page(offset: int = 0, limit: int = 500, retry: int = 3) -> list[dict]:
     params = {
         "action": "cargoquery",
         "tables": "ScoreboardGames",
         "fields": "DateTime_UTC,Team1,Team2,Winner,League,Split,OverviewPage",
-        # Filter only by date — league name field contains full strings like "LCK 2024 Summer"
         "where": "DateTime_UTC >= '2023-01-01' AND (League LIKE '%LCK%' OR League LIKE '%LEC%' OR League LIKE '%LCS%' OR League LIKE '%LPL%' OR League LIKE '%MSI%' OR League LIKE '%World%')",
         "order_by": "DateTime_UTC ASC",
         "limit": limit,
         "offset": offset,
         "format": "json",
     }
-    try:
-        r = requests.get(
-            API_URL,
-            params=params,
-            timeout=30,
-            headers={"User-Agent": "EsportsBot/1.0 (prediction bot; contact via GitHub)"},
-        )
-        if r.status_code == 429:
-            logger.warning("Leaguepedia rate-limited, sleeping 10s")
+    headers = {"User-Agent": "EsportsBot/1.0 (research bot; public data only)"}
+    for attempt in range(retry):
+        try:
+            r = requests.get(API_URL, params=params, timeout=30, headers=headers)
+            if r.status_code == 429:
+                wait = 60 * (attempt + 1)
+                logger.warning(f"Leaguepedia rate-limited, sleeping {wait}s (attempt {attempt+1}/{retry})")
+                time.sleep(wait)
+                continue
+            r.raise_for_status()
+            data = r.json()
+            if "error" in data:
+                code = data["error"].get("code", "")
+                if code == "ratelimited":
+                    wait = 60 * (attempt + 1)
+                    logger.warning(f"Leaguepedia rate limit, sleeping {wait}s (attempt {attempt+1}/{retry})")
+                    time.sleep(wait)
+                    continue
+                logger.warning(f"Leaguepedia API error: {data['error'].get('info', data['error'])}")
+                return []
+            return data.get("cargoquery", [])
+        except Exception as e:
+            logger.warning(f"Leaguepedia fetch error [attempt {attempt+1}]: {e}")
             time.sleep(10)
-            return []
-        r.raise_for_status()
-        data = r.json()
-        if "error" in data:
-            logger.warning(f"Leaguepedia API error: {data['error']}")
-            return []
-        return data.get("cargoquery", [])
-    except Exception as e:
-        logger.warning(f"Leaguepedia fetch error [offset={offset}]: {e}")
-        return []
+    return []
 
 
 def _fetch_all_games() -> list[dict]:
