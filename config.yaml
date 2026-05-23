@@ -43,23 +43,24 @@ confidence:
 
 risk:
   starting_capital: 10000.0
-  kelly_fraction: 0.25
-  max_trade_pct: 0.02         # 2% of capital per trade
-  max_daily_pct: 0.10         # 10% total daily exposure
-  max_concurrent_positions: 5
+  kelly_fraction: 0.15        # 15% fractional Kelly — very conservative
+  max_trade_pct: 0.01         # 1% of capital per trade max
+  max_daily_pct: 0.05         # 5% total daily exposure
+  max_concurrent_positions: 3
   min_trade_size: 10.0
-  max_trade_size: 200.0
+  max_trade_size: 100.0       # $100 cap per trade
 
 filters:
-  min_liquidity: 100          # USD
-  max_spread: 0.06            # 6% bid-ask spread
-  min_hours_to_match: 2       # avoid in-play latency
-  max_days_to_match: 14       # don't bet too far out
+  min_liquidity: 1000         # USD — need real depth to avoid slippage
+  max_spread: 0.04            # 4% — tighter than before
+  min_hours_to_match: 4       # wider buffer: 4h avoids roster-swap surprises
+  max_days_to_match: 7        # 7d max — reduce roster-change risk
   min_team_matches: 10        # minimum match history per team
   min_elo_games: 5            # minimum games to trust ELO
-  min_edge: 0.10              # 10% edge required
-  min_confidence: 60          # 60/100 confidence required
-  coin_flip_buffer: 0.05      # reject if |p - 0.50| < 0.05
+  min_edge: 0.20              # 20% edge — seeded model needs higher bar
+  min_confidence: 72          # raise bar since live data is unavailable
+  coin_flip_buffer: 0.08      # no-bet zone: reject if |p - 0.50| < 0.08
+  max_market_implied_prob: 0.15  # skip extreme underdogs (market <15¢) — model can't reliably beat this
 
 execution:
   paper_trading: true

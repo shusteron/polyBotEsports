@@ -65,4 +65,11 @@ def check_all(
     if confidence < cfg["min_confidence"]:
         reasons.append(f"confidence {confidence:.1f} < {cfg['min_confidence']}")
 
+    # Gate 10: Extreme underdog — market implies <15% chance; seeded model unreliable at this price
+    max_implied = cfg.get("max_market_implied_prob", 1.0)
+    if market_prob < max_implied:
+        reasons.append(
+            f"market implies {market_prob:.1%} — extreme underdog, seeded model unreliable at this price"
+        )
+
     return reasons
