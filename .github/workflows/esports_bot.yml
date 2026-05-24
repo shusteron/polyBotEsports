@@ -7,9 +7,42 @@ on:
     - cron: '0 18 * * *'   # 18:00 UTC (LEC afternoon games)
     - cron: '0 0 * * *'    # 00:00 UTC
     - cron: '30 9 * * *'   # 09:30 UTC daily (resolve expired)
+    - cron: '0 3 * * 1'    # 03:00 UTC every Monday (weekly ratings refresh)
   workflow_dispatch:
 
 jobs:
+  refresh-ratings:
+    if: github.event.schedule == '0 3 * * 1'
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Refresh team ratings from Leaguepedia
+        run: python scripts/refresh_ratings.py
+
+      - name: Commit updated ratings
+        run: |
+          git config user.name "EsportsBot"
+          git config user.email "bot@esportsbot.local"
+          git add data/team_ratings.json data/match_cache.json
+          git diff --cached --quiet || git commit -m "auto: weekly ratings refresh $(date '+%Y-%m-%d')"
+          git pull --rebase origin main
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   scan:
     if: >
       github.event.schedule == '0 6 * * *' ||

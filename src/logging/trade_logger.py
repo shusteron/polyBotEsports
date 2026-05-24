@@ -11,15 +11,17 @@ def log_scan_start(n_markets: int) -> None:
 
 
 def log_market_analysis(market: MatchMarket, prediction: MatchPrediction, edge: float, confidence: float) -> None:
-    logger.debug(
-        f"ANALYSIS | {market.team_a} vs {market.team_b} | "
+    logger.info(
+        f"ANALYSIS | {market.team_a} ({prediction.team_a_matches}g, elo={prediction.elo_a:.0f}) "
+        f"vs {market.team_b} ({prediction.team_b_matches}g, elo={prediction.elo_b:.0f}) | "
+        f"p_elo={prediction.p_elo:.3f} p_form={prediction.p_form:.3f} p_h2h={prediction.p_h2h:.3f} "
         f"p_model={prediction.p_a_wins:.3f} p_market={market.yes_price:.3f} "
         f"edge={edge:+.3f} conf={confidence:.1f} | {market.region}"
     )
 
 
 def log_no_trade(market: MatchMarket, reasons: list[str]) -> None:
-    logger.debug(f"NO_TRADE | {market.team_a} vs {market.team_b} | {'; '.join(reasons)}")
+    logger.info(f"NO_TRADE | {market.team_a} vs {market.team_b} | {'; '.join(reasons)}")
 
 
 def log_trade(signal: TradeSignal, size: float) -> None:

@@ -15,7 +15,8 @@ def calculate_edge(prediction: MatchPrediction, market: MatchMarket) -> tuple[fl
     edge_yes = p_model_yes - p_market_yes
     edge_no = (1 - p_model_yes) - market.no_price
 
-    if abs(edge_yes) >= abs(edge_no):
+    # Pick the side with the highest POSITIVE edge, not largest absolute value
+    if edge_yes >= edge_no:
         return p_model_yes, p_market_yes, "YES"
     else:
         return 1 - p_model_yes, market.no_price, "NO"

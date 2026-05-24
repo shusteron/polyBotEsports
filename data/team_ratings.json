@@ -74,5 +74,12 @@
   "GAM Esports": {"elo": 1440, "games": 58, "wins": 26, "recent": [0,1,0,1,0,0,1,0,0,1], "last_seen": "2026-05-01T00:00:00"},
   "GAM": {"elo": 1440, "games": 58, "wins": 26, "recent": [0,1,0,1,0,0,1,0,0,1], "last_seen": "2026-05-01T00:00:00"},
   "DetonatioN FocusMe": {"elo": 1440, "games": 56, "wins": 24, "recent": [0,0,1,0,0,1,0,0,1,0], "last_seen": "2026-05-01T00:00:00"},
-  "DFM": {"elo": 1440, "games": 56, "wins": 24, "recent": [0,0,1,0,0,1,0,0,1,0], "last_seen": "2026-05-01T00:00:00"}
+  "DFM": {"elo": 1440, "games": 56, "wins": 24, "recent": [0,0,1,0,0,1,0,0,1,0], "last_seen": "2026-05-01T00:00:00"},
+  "FunPlus Phoenix": {"elo": 1610, "games": 72, "wins": 42, "recent": [1,0,1,1,0,1,0,1,0,1], "last_seen": "2026-05-01T00:00:00"},
+  "FPX": {"elo": 1610, "games": 72, "wins": 42, "recent": [1,0,1,1,0,1,0,1,0,1], "last_seen": "2026-05-01T00:00:00"},
+  "Rare Atom": {"elo": 1510, "games": 64, "wins": 34, "recent": [0,1,1,0,1,0,1,0,1,0], "last_seen": "2026-05-01T00:00:00"},
+  "RA": {"elo": 1510, "games": 64, "wins": 34, "recent": [0,1,1,0,1,0,1,0,1,0], "last_seen": "2026-05-01T00:00:00"},
+  "Top Esports": {"elo": 1560, "games": 70, "wins": 38, "recent": [1,0,1,0,0,1,1,0,1,0], "last_seen": "2026-05-01T00:00:00"},
+  "Nongshim RedForce": {"elo": 1440, "games": 66, "wins": 26, "recent": [0,0,0,1,0,0,1,0,0,1], "last_seen": "2026-05-01T00:00:00"},
+  "Royal Never Give Up": {"elo": 1600, "games": 74, "wins": 42, "recent": [1,0,0,1,1,1,0,0,1,0], "last_seen": "2026-05-01T00:00:00"}
 }
