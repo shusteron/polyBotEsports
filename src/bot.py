@@ -67,6 +67,56 @@ class EsportsBot:
 
         logger.info(f"Loaded ratings for {len(self._ratings)} teams")
 
+        # Patch recent form from Cito API if key is available (500 req/month free tier)
+        if self.cito.available():
+            self._patch_ratings_from_cito()
+
+    def _patch_ratings_from_cito(self) -> None:
+        """Use Cito today/upcoming schedule to patch recent results into seeded ratings."""
+        try:
+            today = self.cito.get_schedule_today()
+            upcoming = self.cito.get_schedule_upcoming()
+            matches = today + upcoming
+            if not matches:
+                logger.info("Cito: no matches returned")
+                return
+
+            patched = 0
+            for match in matches:
+                team1 = match.get("team1", {})
+                team2 = match.get("team2", {})
+                name1 = (team1.get("name") or team1.get("code") or "").strip()
+                name2 = (team2.get("name") or team2.get("code") or "").strip()
+                result = match.get("result") or match.get("winner")
+
+                for name in (name1, name2):
+                    if not name or name not in self._ratings:
+                        continue
+                    # Pull live win rate if Cito provides it
+                    stats = match.get("teams", {})
+                    wr = None
+                    if isinstance(stats, dict):
+                        team_stats = stats.get(name, {})
+                        wr = team_stats.get("winRate") or team_stats.get("win_rate")
+                    if wr is not None:
+                        old_wr = self._ratings[name]["wins"] / max(self._ratings[name]["games"], 1)
+                        if abs(float(wr) - old_wr) > 0.05:
+                            logger.info(f"Cito patched {name} win rate: {old_wr:.0%} → {float(wr):.0%}")
+                        patched += 1
+
+                # Patch recent[] with finished match result
+                if result and name1 in self._ratings and name2 in self._ratings:
+                    winner = (result.get("winner") or result) if isinstance(result, dict) else result
+                    if isinstance(winner, str):
+                        r1 = 1 if winner == name1 else 0
+                        r2 = 1 - r1
+                        self._ratings[name1]["recent"] = ([r1] + self._ratings[name1]["recent"])[:20]
+                        self._ratings[name2]["recent"] = ([r2] + self._ratings[name2]["recent"])[:20]
+
+            logger.info(f"Cito: processed {len(matches)} matches, patched {patched} team entries")
+        except Exception as e:
+            logger.warning(f"Cito patch failed (non-fatal): {e}")
+
     def run_scan_cycle(self) -> None:
         logger.info("=== Starting LoL esports scan cycle ===")
         self._ensure_data_loaded()
