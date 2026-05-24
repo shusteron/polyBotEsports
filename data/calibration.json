@@ -1,15 +1,15 @@
 [
   {
-    "market_id": "2293200",
-    "market_title": "LoL: LYON vs Team Liquid (BO5) - LCS Playoffs",
-    "team_a": "LYON",
-    "team_b": "TL",
-    "predicted_prob": 0.5887845037743231,
-    "market_prob": 0.455,
-    "edge": 0.1337845037743231,
-    "confidence": 67.9,
+    "market_id": "2342527",
+    "market_title": "LoL: DN SOOPers vs Nongshim Red Force (BO3) - LCK Rounds 1-2",
+    "team_a": "DN SOOPers",
+    "team_b": "Nongshim RedForce",
+    "predicted_prob": 0.6400862102361262,
+    "market_prob": 0.24,
+    "edge": 0.4000862102361262,
+    "confidence": 68.5,
     "outcome": null,
     "pnl": null,
-    "recorded_at": "2026-05-24T12:24:54.277349+00:00"
+    "recorded_at": "2026-05-24T12:13:19.544903+00:00"
   }
 ]
