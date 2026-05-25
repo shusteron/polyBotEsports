@@ -67,7 +67,8 @@ class EsportsBot:
 
         logger.info(f"Loaded ratings for {len(self._ratings)} teams")
 
-        # Cito API (cito.gg) — domain currently not resolving, skipped
+        if self.cito.available():
+            self._patch_ratings_from_cito()
 
     def _patch_ratings_from_cito(self) -> None:
         """Use Cito today/upcoming schedule to patch recent results into seeded ratings."""

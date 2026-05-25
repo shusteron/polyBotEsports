@@ -8,7 +8,7 @@ from typing import Optional
 import requests
 from loguru import logger
 
-BASE_URL = "https://api.cito.gg/api/v1/lol"
+BASE_URL = "https://api.citoapi.com/api/v1/lol"
 REQUEST_DELAY = 1.0  # seconds between calls — preserve free-tier quota
 
 
@@ -17,7 +17,7 @@ class CitoClient:
         self.api_key = api_key or os.getenv("cito_league", "") or os.getenv("CITO_API_KEY", "")
         self.session = requests.Session()
         if self.api_key:
-            self.session.headers["x-api-key"] = self.api_key
+            self.session.headers["Authorization"] = f"Bearer {self.api_key}"
 
     def _get(self, path: str, params: dict | None = None) -> dict | list | None:
         url = f"{BASE_URL}{path}"
