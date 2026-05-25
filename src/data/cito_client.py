@@ -14,7 +14,7 @@ REQUEST_DELAY = 1.0  # seconds between calls — preserve free-tier quota
 
 class CitoClient:
     def __init__(self, api_key: Optional[str] = None):
-        self.api_key = api_key or os.getenv("CITO_API_KEY", "")
+        self.api_key = api_key or os.getenv("cito_league", "") or os.getenv("CITO_API_KEY", "")
         self.session = requests.Session()
         if self.api_key:
             self.session.headers["x-api-key"] = self.api_key

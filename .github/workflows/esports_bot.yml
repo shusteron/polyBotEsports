@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      CITO_API_KEY: ${{ secrets.CITO_API_KEY }}
+      CITO_API_KEY: ${{ secrets.cito_league }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -94,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      CITO_API_KEY: ${{ secrets.CITO_API_KEY }}
+      CITO_API_KEY: ${{ secrets.cito_league }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
