@@ -248,7 +248,9 @@ class EsportsBot:
             except Exception:
                 continue
 
-            if now < res_date:
+            # Also resolve if Polymarket has already closed the market early
+            polymarket_closed = self._check_polymarket_closed(trade.get("market_id", ""))
+            if now < res_date and not polymarket_closed:
                 continue
 
             logger.info(f"Resolving {trade['team_a']} vs {trade['team_b']} — checking result...")
@@ -265,12 +267,57 @@ class EsportsBot:
                 resolved += 1
 
         logger.info(f"Resolved {resolved} expired markets")
+        if resolved > 0:
+            from src.export.excel_exporter import export_report
+            export_report(self.paper_trader)
+            logger.info("Excel report updated after resolve")
+
+    def _check_polymarket_closed(self, market_id: str) -> bool:
+        """Return True if Polymarket has already closed/resolved this market."""
+        if not market_id:
+            return False
+        try:
+            import requests
+            r = requests.get(
+                f"https://gamma-api.polymarket.com/markets/{market_id}",
+                timeout=10,
+            )
+            data = r.json()
+            return bool(data.get("closed") or data.get("resolved"))
+        except Exception:
+            return False
 
     def _fetch_match_outcome(self, trade: dict) -> bool | None:
-        """Try to resolve outcome from Cito API or Oracle's Elixir cache."""
-        team_a = trade.get("team_a", "")
-        team_b = trade.get("team_b", "")
+        """Resolve outcome: checks Polymarket prices first, then Leaguepedia cache."""
+        market_id = trade.get("market_id", "")
 
+        # Primary: Polymarket prices — "1","0" means YES won; "0","1" means NO won
+        if market_id:
+            try:
+                import requests
+                r = requests.get(
+                    f"https://gamma-api.polymarket.com/markets/{market_id}",
+                    timeout=10,
+                )
+                data = r.json()
+                if data.get("closed") or data.get("resolved"):
+                    prices = data.get("outcomePrices", [])
+                    if isinstance(prices, str):
+                        import json as _json
+                        prices = _json.loads(prices)
+                    if isinstance(prices, list) and len(prices) >= 2:
+                        yes_price = float(prices[0])
+                        if yes_price >= 0.99:
+                            logger.info(f"Polymarket: {trade['team_a']} WON (YES resolved at {yes_price})")
+                            return True
+                        elif yes_price <= 0.01:
+                            logger.info(f"Polymarket: {trade['team_b']} WON (YES resolved at {yes_price})")
+                            return False
+            except Exception as e:
+                logger.warning(f"Polymarket outcome fetch failed: {e}")
+
+        # Fallback: Leaguepedia match data
+        team_a = trade.get("team_a", "")
         if self._match_df is not None and not self._match_df.empty:
             res_str = trade.get("resolution_date", "")
             try:
@@ -278,7 +325,6 @@ class EsportsBot:
                 res_date = dp.parse(res_str).date()
             except Exception:
                 return None
-
             recent = self._match_df[self._match_df["date"].dt.date == res_date]
             a_rows = recent[recent["teamname"] == team_a]
             if not a_rows.empty:
