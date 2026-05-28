@@ -8,8 +8,8 @@
     "market_prob": 0.24,
     "edge": 0.4000862102361262,
     "confidence": 68.5,
-    "outcome": null,
-    "pnl": null,
+    "outcome": false,
+    "pnl": -96.04,
     "recorded_at": "2026-05-24T12:13:19.544903+00:00"
   },
   {

@@ -54,11 +54,12 @@
       "market_prob": 0.24,
       "edge": 0.4000862102361262,
       "confidence": 68.5,
-      "status": "OPEN",
+      "status": "RESOLVED",
       "opened_at": "2026-05-24T12:13:19.544607+00:00",
       "resolution_date": "2026-05-28T14:00:00+00:00",
-      "pnl": null,
-      "outcome": null
+      "pnl": -96.04,
+      "outcome": false,
+      "resolved_at": "2026-05-28T17:48:05.604265+00:00"
     },
     {
       "id": "b95266f4",
