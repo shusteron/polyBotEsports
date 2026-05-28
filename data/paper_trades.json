@@ -1,5 +1,5 @@
 {
-  "capital": 9412.88,
+  "capital": 9225.56,
   "trades": [
     {
       "id": "a99a57ee",
@@ -77,6 +77,44 @@
       "status": "OPEN",
       "opened_at": "2026-05-28T15:47:08.501058+00:00",
       "resolution_date": "2026-05-29T15:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    },
+    {
+      "id": "8cbc890c",
+      "market_id": "2351924",
+      "market_title": "LoL: Top Esports vs LGD Gaming (BO5) - LPL Playoffs",
+      "team_a": "TES",
+      "team_b": "LGD Gaming",
+      "action": "BUY_NO",
+      "fill_price": 0.15731,
+      "size": 94.13,
+      "model_prob": 0.3625623903695908,
+      "market_prob": 0.155,
+      "edge": 0.20756239036959082,
+      "confidence": 69.8,
+      "status": "OPEN",
+      "opened_at": "2026-05-28T20:03:04.834195+00:00",
+      "resolution_date": "2026-05-29T15:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    },
+    {
+      "id": "e54574a5",
+      "market_id": "2352067",
+      "market_title": "LoL: Team Liquid vs Shopify Rebellion (BO5) - LCS Playoffs",
+      "team_a": "TL",
+      "team_b": "Shopify Rebellion",
+      "action": "BUY_NO",
+      "fill_price": 0.15731,
+      "size": 93.19,
+      "model_prob": 0.40239610359775246,
+      "market_prob": 0.155,
+      "edge": 0.24739610359775246,
+      "confidence": 68.5,
+      "status": "OPEN",
+      "opened_at": "2026-05-28T20:03:04.835729+00:00",
+      "resolution_date": "2026-06-01T02:00:00+00:00",
       "pnl": null,
       "outcome": null
     }
