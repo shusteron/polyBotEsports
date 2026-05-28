@@ -1,5 +1,5 @@
 {
-  "capital": 9507.96,
+  "capital": 9412.88,
   "trades": [
     {
       "id": "a99a57ee",
@@ -57,6 +57,25 @@
       "status": "OPEN",
       "opened_at": "2026-05-24T12:13:19.544607+00:00",
       "resolution_date": "2026-05-28T14:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    },
+    {
+      "id": "b95266f4",
+      "market_id": "2351924",
+      "market_title": "LoL: Top Esports vs LGD Gaming (BO5) - LPL Playoffs",
+      "team_a": "TES",
+      "team_b": "LGD Gaming",
+      "action": "BUY_NO",
+      "fill_price": 0.15731,
+      "size": 95.08,
+      "model_prob": 0.3625623903695908,
+      "market_prob": 0.155,
+      "edge": 0.20756239036959082,
+      "confidence": 69.8,
+      "status": "OPEN",
+      "opened_at": "2026-05-28T15:47:08.501058+00:00",
+      "resolution_date": "2026-05-29T15:00:00+00:00",
       "pnl": null,
       "outcome": null
     }
