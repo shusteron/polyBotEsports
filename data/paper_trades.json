@@ -1,5 +1,5 @@
 {
-  "capital": 9225.56,
+  "capital": 9041.97,
   "trades": [
     {
       "id": "a99a57ee",
@@ -116,6 +116,44 @@
       "confidence": 68.5,
       "status": "OPEN",
       "opened_at": "2026-05-28T20:03:04.835729+00:00",
+      "resolution_date": "2026-06-01T02:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    },
+    {
+      "id": "16c78bbe",
+      "market_id": "2352036",
+      "market_title": "LoL: Bilibili Gaming vs Team WE (BO5) - LPL Playoffs",
+      "team_a": "BLG",
+      "team_b": "Team WE",
+      "action": "BUY_YES",
+      "fill_price": 0.5480900000000001,
+      "size": 92.26,
+      "model_prob": 0.7035569468256858,
+      "market_prob": 0.545,
+      "edge": 0.15855694682568577,
+      "confidence": 74.8,
+      "status": "OPEN",
+      "opened_at": "2026-05-29T20:04:03.722272+00:00",
+      "resolution_date": "2026-05-30T15:00:00+00:00",
+      "pnl": null,
+      "outcome": null
+    },
+    {
+      "id": "579b9f47",
+      "market_id": "2352067",
+      "market_title": "LoL: Team Liquid vs Shopify Rebellion (BO5) - LCS Playoffs",
+      "team_a": "TL",
+      "team_b": "Shopify Rebellion",
+      "action": "BUY_NO",
+      "fill_price": 0.15731,
+      "size": 91.33,
+      "model_prob": 0.40239610359775246,
+      "market_prob": 0.155,
+      "edge": 0.24739610359775246,
+      "confidence": 68.5,
+      "status": "OPEN",
+      "opened_at": "2026-05-29T20:04:03.723150+00:00",
       "resolution_date": "2026-06-01T02:00:00+00:00",
       "pnl": null,
       "outcome": null
