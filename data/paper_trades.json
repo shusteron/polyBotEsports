@@ -74,11 +74,12 @@
       "market_prob": 0.155,
       "edge": 0.20756239036959082,
       "confidence": 69.8,
-      "status": "OPEN",
+      "status": "RESOLVED",
       "opened_at": "2026-05-28T15:47:08.501058+00:00",
       "resolution_date": "2026-05-29T15:00:00+00:00",
-      "pnl": null,
-      "outcome": null
+      "pnl": -95.08,
+      "outcome": true,
+      "resolved_at": "2026-05-29T17:48:11.448662+00:00"
     },
     {
       "id": "8cbc890c",
@@ -93,11 +94,12 @@
       "market_prob": 0.155,
       "edge": 0.20756239036959082,
       "confidence": 69.8,
-      "status": "OPEN",
+      "status": "RESOLVED",
       "opened_at": "2026-05-28T20:03:04.834195+00:00",
       "resolution_date": "2026-05-29T15:00:00+00:00",
-      "pnl": null,
-      "outcome": null
+      "pnl": -94.13,
+      "outcome": true,
+      "resolved_at": "2026-05-29T17:48:11.610211+00:00"
     },
     {
       "id": "e54574a5",

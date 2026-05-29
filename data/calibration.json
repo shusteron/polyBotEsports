@@ -21,8 +21,8 @@
     "market_prob": 0.155,
     "edge": 0.20756239036959082,
     "confidence": 69.8,
-    "outcome": null,
-    "pnl": null,
+    "outcome": true,
+    "pnl": -95.08,
     "recorded_at": "2026-05-28T15:47:08.501493+00:00"
   },
   {
@@ -34,8 +34,8 @@
     "market_prob": 0.155,
     "edge": 0.20756239036959082,
     "confidence": 69.8,
-    "outcome": null,
-    "pnl": null,
+    "outcome": true,
+    "pnl": -94.13,
     "recorded_at": "2026-05-28T20:03:04.834802+00:00"
   },
   {
